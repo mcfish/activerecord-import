@@ -39,7 +39,7 @@ module ActiveRecord::Import::MysqlAdapter
       sql2insert = base_sql + values.join( ',' ) + post_sql
       insert( sql2insert, *args )
       result = select_all('SELECT LAST_INSERT_ID()')
-      ids = result.flatten
+      ids = result.rows.flatten
     else
       value_sets = ::ActiveRecord::Import::ValueSetsBytesParser.parse(values,
         reserved_bytes: sql_size,
@@ -51,7 +51,7 @@ module ActiveRecord::Import::MysqlAdapter
           sql2insert = base_sql + value_set.join( ',' ) + post_sql
           insert( sql2insert, *args )
           result = select_all('SELECT LAST_INSERT_ID()')
-          ids = result.flatten
+          ids = result.rows.flatten
         end
       end
     end
